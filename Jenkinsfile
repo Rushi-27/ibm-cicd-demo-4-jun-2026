@@ -13,16 +13,16 @@
 // build and push to docker hub 
 
 	// docker build -t ibm-cicd-demo:1.0.0 .
-	// docker tag ibm-cicd-demo:1.0.0 vamandeshmukh/ibm-cicd-demo:1.0.0
-	// docker push vamandeshmukh/ibm-cicd-demo:1.0.0
+	// docker tag ibm-cicd-demo:1.0.0 rushikesh2701/ibm-cicd-demo:1.0.0
+	// docker push rushikesh2701/ibm-cicd-demo:1.0.0
 
 
 pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-        IMAGE_NAME            = "vamandeshmukh/ibm-cicd-demo"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-cicd')
+        IMAGE_NAME            = "rushikesh2701/ibm-cicd-demo"
         IMAGE_TAG              = "${env.BUILD_NUMBER}"
     }
 
@@ -30,7 +30,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/dyesmuk/ibm-cicd-demo-4-jun-2026.git'
+                git branch: 'main', url: 'https://github.com/Rushi-27/ibm-cicd-demo-4-jun-2026.git'
             }
         }
 
@@ -53,7 +53,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                bat "echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin"
+                bat "docker login"
                 bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 bat "docker push ${IMAGE_NAME}:latest"
             }
